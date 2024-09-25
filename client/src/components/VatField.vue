@@ -4,7 +4,7 @@
     :path="props.path"
     :modelValue="modelValue"
     @update:modelValue="updateModelValue"
-    :options="['1', '2']"
+    :options="['19%', '21%', '23%', '25%']"
   ></select-field>
 </template>
 
