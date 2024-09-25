@@ -1,15 +1,14 @@
 <template>
-  <select-field
-    label="VAT"
+  <text-field
+    :label="props.label"
     :path="props.path"
     :modelValue="modelValue"
     @update:modelValue="updateModelValue"
-    :options="['1', '2']"
-  ></select-field>
+  ></text-field>
 </template>
 
 <script setup lang="ts">
-import SelectField from './SelectField.vue'
+import TextField from '../TextField.vue'
 
 const props = defineProps<{
   path: string
