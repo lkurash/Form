@@ -1,6 +1,6 @@
 <template>
   <text-field
-    label="NETTO"
+    label="Price netto EUR"
     :modelValue="props.modelValue"
     :valueApply="valueApply"
     @update:modelValue="updateModelValue"

@@ -4,11 +4,10 @@
       name="default"
       :formData="form"
       :updateFormData="updateFormData"
-      :clearError="clearError"
     ></slot>
     <div>
-      <button type="button" @click="clearForm">Clear</button>
-      <button type="submit">Save</button>
+      <button class="button" type="button" @click="clearForm">Clear</button>
+      <button class="button" type="submit">Save</button>
     </div>
   </form>
   <div class="congrats-message" v-else>
@@ -22,7 +21,7 @@ import { computed, reactive, watch } from "vue";
 import { FormData, Errors } from "../helpers.ts/types";
 import axios from "axios";
 
-const props = defineProps<{ rules: any }>();
+const props = defineProps<{ rules?: (value: any) => void }>();
 const isDataFetched = reactive<{ value: boolean }>({ value: false });
 
 const form = reactive<{
@@ -35,8 +34,8 @@ const form = reactive<{
     confirmation: null,
     vat: "",
     netto: "",
-    brutto: ""
-  }
+    brutto: "",
+  },
 });
 
 const calculateBrutto = computed(() => {
@@ -55,7 +54,7 @@ watch(
 );
 
 async function submitForm() {
-  form.errors = props.rules(form.values);
+  form.errors = props.rules!(form.values);
 
   if (Object.keys(form.errors).length === 0) {
     await sendData();
@@ -68,7 +67,7 @@ async function sendData() {
       "http://localhost:3000/api/submit-financial-info",
       form.values,
       {
-        headers: { "Content-Type": "application/json" }
+        headers: { "Content-Type": "application/json" },
       }
     );
     isDataFetched.value = !!response;
@@ -93,6 +92,10 @@ function clearForm() {
   form.values.netto = "";
   form.values.brutto = "";
   form.errors = null;
+}
+
+function closeMessage() {
+  return (isDataFetched.value = false);
 }
 </script>
 <style scoped></style>
