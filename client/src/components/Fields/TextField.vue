@@ -2,7 +2,12 @@
   <div>
     <label v-if="label">{{ label }}</label>
     <input type="text" v-model="field.value" :disabled="props.disabled" />
-    <span v-if="maxValue">{{ remainingChars }}</span>
+    <p
+      v-if="maxValue"
+      style="color: grey; margin-top: 5px; margin-left: 5px; font-size: 13px"
+    >
+      You can enter {{ remainingChars }} characters
+    </p>
     <div class="error-message">
       {{ errorMessage }}
     </div>
@@ -26,7 +31,7 @@ const props = defineProps<{
 const emit = defineEmits(["update:modelValue"]);
 
 const field = reactive<{ value: string }>({
-  value: ""
+  value: "",
 });
 
 watch(
@@ -78,14 +83,14 @@ function validateField(newValue: string) {
 function setError(message: string) {
   const updatedErrors = {
     ...props.modelValue.errors,
-    [props.path]: { message }
+    [props.path]: { message },
   };
   emit("update:modelValue", { errors: updatedErrors });
 }
 
 function clearError() {
   const errors = {
-    ...props.modelValue.errors
+    ...props.modelValue.errors,
   };
   if (!errors[props.path]) return;
 

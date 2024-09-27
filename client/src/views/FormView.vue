@@ -35,11 +35,11 @@
 
 <script setup lang="ts">
 import BaseForm from "../components/BaseForm.vue";
-import TextField from "../components/TextField.vue";
-import VatField from "../components/VatField.vue";
-import BruttoField from "../components/price/BruttoField.vue";
-import NettoField from "../components/price/NettoField.vue";
-import RadioField from "../components/RadioField.vue";
+import TextField from "../components/Fields/TextField.vue";
+import VatField from "../components/Fields/VatField.vue";
+import BruttoField from "../components/Fields/price/BruttoField.vue";
+import NettoField from "../components/Fields/price/NettoField.vue";
+import RadioField from "../components/Fields/RadioField.vue";
 import formRules from "../helpers/functions";
 </script>
 
@@ -55,8 +55,7 @@ import formRules from "../helpers/functions";
 }
 
 input,
-select,
-textarea {
+select {
   width: 100%;
   padding: 10px;
   border-radius: 4px;
@@ -66,14 +65,13 @@ textarea {
 }
 
 input:focus,
-select:focus,
-textarea:focus {
+select:focus {
   border-color: #007bff;
   outline: none;
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
-button {
+.button {
   background-color: #007bff;
   color: white;
   padding: 10px 20px;
@@ -84,7 +82,7 @@ button {
   font-size: 16px;
 }
 
-button:hover {
+.button:hover {
   background-color: #0056b3;
 }
 
@@ -149,6 +147,6 @@ label {
 }
 
 .close-btn:hover {
-  color: #1b5e20;
+  color: #0b260d;
 }
 </style>

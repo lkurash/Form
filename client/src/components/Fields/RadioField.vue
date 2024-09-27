@@ -43,7 +43,7 @@ const props = defineProps<{
 const emit = defineEmits(["update:modelValue"]);
 
 const field = reactive<{ value: boolean | null }>({
-  value: null
+  value: null,
 });
 
 watch(
@@ -71,7 +71,7 @@ const errorMessage = computed(() => {
 
 function clearError() {
   const errors = {
-    ...props.modelValue.errors
+    ...props.modelValue.errors,
   };
   if (!errors[props.path]) return;
 

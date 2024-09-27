@@ -1,6 +1,6 @@
 <template>
   <text-field
-    label="BRUTTO"
+    label="Price brutto EUR"
     :path="props.path"
     :modelValue="modelValue"
     @update:modelValue="updateModelValue"

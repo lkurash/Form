@@ -10,8 +10,7 @@ export default function formRules(data: any) {
   if (data.confirmation === null) {
     errors.confirmation = { message: "Confirmation is required" };
   }
-  console.log(data.vat);
-  
+
   if (!data.vat) {
     errors.vat = { message: "VAT is required" };
   }

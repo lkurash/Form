@@ -1,8 +1,8 @@
 <template>
   <div>
     <label v-if="label">{{ label }}</label>
-    <select v-model="field.value">
-      <option value="" disabled selected></option>
+    <select v-model="field.value" placeholder="Choose VAT">
+      <option value="" disabled selected>Choose VAT</option>
       <template v-for="option in options" :key="option">
         <option :value="option">{{ option }}</option>
       </template>
@@ -26,7 +26,7 @@ const props = defineProps<{
 const emit = defineEmits(["update:modelValue"]);
 
 const field = reactive<{ value: string | null }>({
-  value: ""
+  value: "",
 });
 
 watch(
@@ -54,7 +54,7 @@ const errorMessage = computed(() => {
 
 function clearError() {
   const errors = {
-    ...props.modelValue.errors
+    ...props.modelValue.errors,
   };
   if (!errors[props.path]) return;
 
@@ -63,4 +63,10 @@ function clearError() {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+select {
+  font-size: 12px;
+  font-weight: 600;
+  color: grey;
+}
+</style>
