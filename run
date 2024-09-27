@@ -1,0 +1,13 @@
+#!/bin/bash
+
+echo "Installing dependencies..."
+( cd client && npm install )
+( cd server && npm install )
+
+echo "Starting the client and server..."
+( cd server && node app.js ) &
+
+SERVER_PID=$!
+( cd client && npm run dev )
+
+kill $SERVER_PID
