@@ -4,7 +4,7 @@
   </main>
 </template>
 <script setup lang="ts">
-import Form from './views/FormView.vue'
+import Form from "./views/FormView.vue";
 </script>
 
 <style scoped>
