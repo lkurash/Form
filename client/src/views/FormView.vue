@@ -1,6 +1,6 @@
 <template>
   <div class="form">
-    <base-form v-slot="props" :rules="formRules">
+    <base-form v-slot="props" :rules="formRules" :afterSave="getData">
       <text-field
         max-value
         path="description"
@@ -40,6 +40,7 @@ import VatField from '../components/VatField.vue'
 import BruttoField from '../components/price/BruttoField.vue'
 import NettoField from '../components/price/NettoField.vue'
 import RadioField from '../components/RadioField.vue'
+import axios from 'axios'
 
 function formRules(obj: any) {
   const errors = {}
@@ -59,6 +60,17 @@ function formRules(obj: any) {
     errors.netto = { message: 'Text is required' }
   }
   return errors
+}
+
+function getData() {
+  axios
+    .get('http://localhost:3000/api/financial-info')
+    .then((response) => {
+      console.log('Response:', response.data)
+    })
+    .catch((error) => {
+      console.error('Error:', error)
+    })
 }
 </script>
 

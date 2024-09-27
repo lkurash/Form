@@ -15,8 +15,9 @@
 
 <script setup lang="ts">
 import { computed, reactive, watch } from 'vue'
+import axios from 'axios'
 
-const props = defineProps<{ rules: any }>()
+const props = defineProps<{ rules: any; afterSave: any }>()
 
 const form = reactive<{
   errors: any
@@ -61,23 +62,34 @@ watch(
   }
 )
 
-function submitForm() {
+async function submitForm() {
   form.errors = props.rules(form.data)
-  if (form.errors.length) {
+  if (Object.values(form.errors).length) {
     console.log(form.errors)
   } else {
-    console.log('ok')
+    axios
+      .post('http://localhost:3000/api/submit-financial-info', form.data, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then((response) => {
+        console.log('Response:', response.data)
+        props.afterSave()
+      })
+      .catch((error) => {
+        console.error('Error:', error)
+      })
   }
 }
 
 function updateFormData(updatedValue: Record<string, any>) {
   if (updatedValue.errors) {
     form.errors = updatedValue.errors
-  }else{
+  } else {
     Object.assign(form.data, updatedValue)
   }
 }
-console.log(form);
 
 </script>
 <script lang="ts"></script>
