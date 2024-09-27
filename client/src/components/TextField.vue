@@ -3,64 +3,93 @@
     <label v-if="label">{{ label }}</label>
     <input type="text" v-model="field.value" :disabled="props.disabled" />
     <span v-if="maxValue">{{ remainingChars }}</span>
-    <div v-if="errorMessage" class="error-message">
+    <div class="error-message">
       {{ errorMessage }}
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, watch } from 'vue'
+import { computed, reactive, watch } from "vue";
+import { FormData, ModelValue } from "../helpers.ts/types";
 
 const props = defineProps<{
-  label?: string
-  path: string
-  modelValue: Record<string, any>
-  maxValue: boolean
-  disabled: boolean
-  rules?: () => void
-}>()
+  label?: string;
+  path: keyof FormData;
+  modelValue: ModelValue;
+  maxValue?: boolean;
+  disabled?: boolean;
+  rules?: (value: string) => { message?: string } | null;
+  valueApply?: (value: string) => void;
+}>();
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(["update:modelValue"]);
+
 const field = reactive<{ value: string }>({
-  value: props.modelValue.form[props.path] || ''
-})
+  value: ""
+});
 
 watch(
   () => field.value,
   (newValue, oldValue) => {
-    if (props.maxValue && newValue.length > 255) {
-      field.value = oldValue
-    } else {
-      if (props.rules && props.rules(newValue).message) {
-        validateError(newValue)
-      } else {
-        const updatedValue = { ...props.modelValue.form, [props.path]: newValue }
-        emit('update:modelValue', updatedValue)
-      }
-    }
+    updateValue(newValue, oldValue);
   }
-)
+);
 
 watch(
-  () => props.modelValue.form[props.path],
-  (newValue) => {
-    field.value = newValue
+  () => props.modelValue.values[props.path],
+  (newValue, oldValue) => {
+    updateValue(String(newValue), oldValue);
   }
-)
+);
 
-const remainingChars = computed(() => 255 - field.value.length)
+const remainingChars = computed(() => 255 - field.value.length);
 
 const errorMessage = computed(() => {
-  if (!props.modelValue.errors?.[props.path]) return ''
+  if (!props.modelValue.errors?.[props.path]) return "";
 
-  return props.modelValue.errors[props.path].message
-})
+  return props.modelValue.errors[props.path]?.message;
+});
 
-function validateError(newValue) {
-  console.log(newValue)
+function updateValue(newValue: string, oldValue: string) {
+  let value = props.valueApply ? props.valueApply(newValue) : newValue;
+  field.value = value;
 
-  const updatedValue = { ...props.modelValue.errors, [props.path]: props.rules(newValue) }
-  emit('update:modelValue', { errors: updatedValue })
+  if (props.maxValue && value.length > 255) {
+    field.value = oldValue;
+  } else {
+    validateField(value);
+  }
+}
+
+function validateField(newValue: string) {
+  const validationError = props.rules ? props.rules(newValue) : {};
+
+  if (validationError?.message) {
+    setError(validationError.message);
+  } else {
+    clearError();
+
+    const updatedValue = { ...props.modelValue.values, [props.path]: newValue };
+    emit("update:modelValue", updatedValue);
+  }
+}
+
+function setError(message: string) {
+  const updatedErrors = {
+    ...props.modelValue.errors,
+    [props.path]: { message }
+  };
+  emit("update:modelValue", { errors: updatedErrors });
+}
+
+function clearError() {
+  const errors = {
+    ...props.modelValue.errors
+  };
+  if (!errors[props.path]) return;
+
+  delete errors[props.path];
+  emit("update:modelValue", { errors: errors });
 }
 </script>

@@ -1,37 +1,48 @@
 <template>
   <text-field
-    :label="props.label"
-    :path="props.path"
-    :modelValue="modelValue"
+    label="NETTO"
+    :modelValue="props.modelValue"
+    :valueApply="valueApply"
     @update:modelValue="updateModelValue"
     :rules="rules"
+    :path="props.path"
+    :disabled="isDisabled.value"
   ></text-field>
 </template>
 
 <script setup lang="ts">
-import TextField from '../TextField.vue'
+import { reactive, watch } from "vue";
+import { FormData, ModelValue } from "../../helpers.ts/types";
+import TextField from "../TextField.vue";
 
 const props = defineProps<{
-  path: string
-  modelValue: {
-    form: Record<string, string>
-    errors: Record<string, { message: string }>
-  }
-}>()
-const emit = defineEmits(['update:modelValue'])
+  path: keyof FormData;
+  modelValue: ModelValue;
+}>();
+const isDisabled = reactive<{ value: boolean }>({ value: true });
+const emit = defineEmits(["update:modelValue"]);
 
-function updateModelValue(updatedValue: Record<string, string>) {
-  emit('update:modelValue', updatedValue)
+function updateModelValue(updatedValue: string) {
+  emit("update:modelValue", updatedValue);
+}
+watch(
+  () => props.modelValue.values.vat,
+  (newValue) => {
+    isDisabled.value = !newValue;
+  }
+);
+
+function valueApply(value: string) {
+  return value.replace(/,/g, ".").trim();
 }
 
-function rules(value: any) {
-  const normalizedValue = value.replace(/,/g, '.').trim()
-  const numericValue = +normalizedValue
+function rules(value: string) {
+  const numericValue = +value;
 
-  if (isNaN(numericValue) || typeof numericValue !== 'number') {
-    return { message: 'Please, input a valid number' }
+  if (isNaN(numericValue) || typeof numericValue !== "number") {
+    return { message: "Please, input a valid number" };
   } else {
-    return {}
+    return null;
   }
 }
 </script>

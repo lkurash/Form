@@ -1,84 +1,98 @@
 <template>
-  <form @submit.prevent="submitForm">
+  <form @submit.prevent="submitForm" v-if="!isDataFetched.value">
     <slot
       name="default"
-      :form="form.data"
+      :formData="form"
       :updateFormData="updateFormData"
-      :errors="form.errors"
+      :clearError="clearError"
     ></slot>
     <div>
-      <button type="button">Cancel</button>
+      <button type="button" @click="clearForm">Clear</button>
       <button type="submit">Save</button>
     </div>
   </form>
+  <div class="congrats-message" v-else>
+    <button class="close-btn" @click="closeMessage">×</button>
+    Congratulations! You've successfully completed the task!
+  </div>
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, watch } from 'vue'
+import { computed, reactive, watch } from "vue";
+import { FormData, Errors } from "../helpers.ts/types";
+import axios from "axios";
 
-const props = defineProps<{ rules: any }>()
+const props = defineProps<{ rules: any }>();
+const isDataFetched = reactive<{ value: boolean }>({ value: false });
 
 const form = reactive<{
-  errors: any
-  data: {
-    description: string
-    confirmation: boolean | null
-    vat: string
-    netto: number | null
-    brutto: number | null
-  }
+  errors?: Errors | null;
+  values: FormData;
 }>({
   errors: null,
-  data: {
-    description: '',
+  values: {
+    description: "",
     confirmation: null,
-    vat: '',
-    netto: null,
-    brutto: null
+    vat: "",
+    netto: "",
+    brutto: ""
   }
-})
+});
 
 const calculateBrutto = computed(() => {
-  const { netto, vat } = form.data
-  if (netto !== null && vat) {
-    let brutto = (netto * parseFloat(vat)) / 100
-    return brutto
+  const { netto, vat } = form.values;
+  if (netto && vat) {
+    return netto + (netto * parseFloat(vat)) / 100;
   }
-  return null
-})
+  return "";
+});
 
 watch(
-  () => form.data.netto,
+  () => [form.values.netto, form.values.vat],
   () => {
-    form.data.brutto = calculateBrutto.value
+    form.values.brutto = calculateBrutto.value;
   }
-)
+);
 
-watch(
-  () => form.data.vat,
-  () => {
-    form.data.brutto = calculateBrutto.value
-  }
-)
+async function submitForm() {
+  form.errors = props.rules(form.values);
 
-function submitForm() {
-  form.errors = props.rules(form.data)
-  if (form.errors.length) {
-    console.log(form.errors)
-  } else {
-    console.log('ok')
+  if (Object.keys(form.errors).length === 0) {
+    await sendData();
   }
 }
 
-function updateFormData(updatedValue: Record<string, any>) {
+async function sendData() {
+  try {
+    const response = await axios.post(
+      "http://localhost:3000/api/submit-financial-info",
+      form.values,
+      {
+        headers: { "Content-Type": "application/json" }
+      }
+    );
+    isDataFetched.value = !!response;
+    clearForm();
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function updateFormData(updatedValue: any) {
   if (updatedValue.errors) {
-    form.errors = updatedValue.errors
-  }else{
-    Object.assign(form.data, updatedValue)
+    form.errors = updatedValue.errors;
+  } else {
+    Object.assign(form.values, updatedValue);
   }
 }
-console.log(form);
 
+function clearForm() {
+  form.values.description = "";
+  form.values.confirmation = null;
+  form.values.vat = null;
+  form.values.netto = "";
+  form.values.brutto = "";
+  form.errors = null;
+}
 </script>
-<script lang="ts"></script>
 <style scoped></style>
