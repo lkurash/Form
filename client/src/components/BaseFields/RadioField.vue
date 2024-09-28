@@ -51,7 +51,7 @@ watch(
   () => field.value,
   (newValue) => {
     clearError();
-    const updatedValue = { ...props.modelValue.values, [props.path]: newValue };
+    const updatedValue = { ...formData.values, [props.path]: newValue };
     emit("update:modelValue", updatedValue);
   }
 );
@@ -72,7 +72,7 @@ const errorMessage = computed(() => {
 
 function clearError() {
   const errors = {
-    ...props.modelValue.errors,
+    ...formData.errors,
   };
   if (!errors[props.path]) return;
 

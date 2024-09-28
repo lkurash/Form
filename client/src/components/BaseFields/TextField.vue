@@ -76,14 +76,14 @@ function validateField(newValue: string) {
   } else {
     clearError();
 
-    const updatedValue = { ...props.modelValue.values, [props.path]: newValue };
+    const updatedValue = { ...formData.values, [props.path]: newValue };
     emit("update:modelValue", updatedValue);
   }
 }
 
 function setError(message: string) {
   const updatedErrors = {
-    ...props.modelValue.errors,
+    ...formData.errors,
     [props.path]: { message },
   };
   emit("update:modelValue", { errors: updatedErrors });
@@ -91,7 +91,7 @@ function setError(message: string) {
 
 function clearError() {
   const errors = {
-    ...props.modelValue.errors,
+    ...formData.errors,
   };
   if (!errors[props.path]) return;
 
