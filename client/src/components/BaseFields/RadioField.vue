@@ -1,6 +1,6 @@
 <template>
   <div>
-    <label v-if="props.label">{{ props.label }}</label>
+    <span v-if="props.label">{{ props.label }}</span>
     <div class="container">
       <div class="field">
         <input
@@ -73,7 +73,7 @@ function clearError() {
 <style scoped>
 .container {
   display: flex;
-  height: 50px;
+  height: 20px;
 }
 
 .field {

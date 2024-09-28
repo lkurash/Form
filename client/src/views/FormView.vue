@@ -71,7 +71,7 @@ select:focus {
   background-color: #007bff;
   color: white;
   padding: 10px 20px;
-  margin: 10px;
+  margin-top: 10px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -82,7 +82,8 @@ select:focus {
   background-color: #0056b3;
 }
 
-label {
+label,
+span {
   font-weight: bold;
   display: block;
   margin-bottom: 5px;
@@ -94,14 +95,6 @@ label {
   font-size: 12px;
   margin-top: 5px;
   height: 20px;
-}
-
-.form-title {
-  font-size: 24px;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 20px;
-  text-align: center;
 }
 
 .congrats-message {

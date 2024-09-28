@@ -1,7 +1,7 @@
 <template>
   <div>
     <label v-if="label">{{ label }}</label>
-    <select v-model="fieldValue" placeholder="Choose VAT">
+    <select v-model="fieldValue" :placeholder="props.placeholder || ''">
       <option value="" disabled selected>Choose VAT</option>
       <template v-for="option in options" :key="option">
         <option :value="option">{{ option }}</option>
@@ -22,6 +22,7 @@ const props = defineProps<{
   path: keyof FormData;
   updateFormData: (value: string) => void;
   options: string[];
+  placeholder?: string;
 }>();
 
 const formData = inject("formData");

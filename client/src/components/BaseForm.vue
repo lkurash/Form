@@ -1,6 +1,5 @@
 <template>
-  <div class="congrats-message" v-if="isMessageShow">
-    <button class="close-btn" @click="closeMessage">×</button>
+  <div class="congrats-message" v-if="isMessageShow.value">
     Congratulations! You've successfully completed the task!
   </div>
   <form @submit.prevent="submitForm" v-else>
@@ -10,7 +9,6 @@
       :updateFormData="updateFormData"
     ></slot>
     <div>
-      <button class="button" type="button" @click="clearForm">Clear</button>
       <button class="button" type="submit">Save</button>
     </div>
   </form>
@@ -22,11 +20,12 @@ import { FormData, Errors } from "../helpers.ts/types";
 import axios from "axios";
 
 const props = defineProps<{ rules?: (value: any) => void }>();
-const isMessageShow = reactive(false);
+const isMessageShow = reactive<{ value: boolean }>({ value: false });
 
 const formData = reactive<{
   errors?: Errors | null;
   values: FormData;
+  isClear: boolean;
 }>({
   errors: null,
   values: {
@@ -72,33 +71,19 @@ async function sendData() {
         headers: { "Content-Type": "application/json" },
       }
     );
-    isMessageShow = !!response;
-    clearForm();
+    isMessageShow.value = !!response;
   } catch (error) {
     console.error(error);
   }
 }
 
 function updateFormData(updatedValue: any) {
+  formData.isClear = false;
   if (updatedValue.errors) {
     formData.errors = updatedValue.errors;
   } else {
     Object.assign(formData.values, updatedValue);
   }
-}
-console.log(formData);
-
-function clearForm() {
-  formData.values.description = "";
-  formData.values.confirmation = null;
-  formData.values.vat = null;
-  formData.values.netto = "";
-  formData.values.brutto = "";
-  formData.errors = null;
-}
-
-function closeMessage() {
-  return (isDataFetched.value = false);
 }
 </script>
 <style scoped></style>

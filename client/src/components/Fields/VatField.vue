@@ -4,6 +4,7 @@
     :path="props.path"
     :updateFormData="updateFormData"
     :options="['19%', '21%', '23%', '25%']"
+    placeholder="Choose VAT"
   ></select-field>
 </template>
 
@@ -15,7 +16,6 @@ const props = defineProps<{
   path: keyof FormData;
   updateFormData: (value: string) => void;
 }>();
-
 </script>
 
 <style scoped></style>

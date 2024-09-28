@@ -31,15 +31,6 @@ const field = reactive<{ value: string }>({
   value: "",
 });
 
-const fieldValue = computed({
-  get() {
-    return formData.values[props.path];
-  },
-  set(newValue) {
-    emit("update:title", newValue);
-  },
-});
-
 watch(
   () => field.value,
   (newValue) => {
@@ -102,9 +93,9 @@ function clearError() {
 </script>
 <style>
 .max-value {
+  margin: 5px 0px 0px 5px;
   color: grey;
   margin-top: 5px;
-  margin-left: 5px;
   font-size: 13px;
 }
 </style>
