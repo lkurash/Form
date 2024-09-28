@@ -30,16 +30,17 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject, reactive, watch } from "vue";
-import { FormData, ModelValue } from "../helpers.ts/types";
+import { computed, inject } from "vue";
+import { FormData } from "../helpers.ts/types";
+import { UpdateFormData } from "../../helpers/types";
 
 const props = defineProps<{
   label?: string;
   path: keyof FormData;
-  updateFormData: (value: string) => void;
+  updateFormData: UpdateFormData;
 }>();
 
-const formData = inject("formData");
+const formData = inject<FormData>("formData");
 
 const fieldValue = computed({
   get() {

@@ -6,15 +6,12 @@
 </template>
 
 <script setup lang="ts">
-import { FormData } from "@/src3/types";
+import { FormData } from "../../helpers/types";
 import { inject } from "vue";
-import TextField from "../BaseFields/TextField.vue";
 
 const props = defineProps<{
   path: keyof FormData;
 }>();
 
-const { values } = inject("formData");
+const { values } = inject<FormData>("formData");
 </script>
-
-<style scoped></style>

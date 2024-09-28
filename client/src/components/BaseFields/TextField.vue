@@ -15,19 +15,20 @@
 
 <script setup lang="ts">
 import { computed, inject, reactive, watch } from "vue";
-import { FormData, ModelValue } from "../helpers.ts/types";
+import { FormData } from "../helpers.ts/types";
+import { UpdateFormData } from "../../helpers/types";
 
 const props = defineProps<{
   label?: string;
   path: keyof FormData;
-  updateFormData: (value: string) => void;
-  maxValue?: boolean;
+  updateFormData: UpdateFormData;
+  maxValue?: string;
   disabled?: boolean;
   fieldValidate?: (value: string) => { message?: string } | null;
   valueApply?: (value: string) => void;
 }>();
 
-const formData = inject("formData");
+const formData = inject<FormData>("formData");
 
 const field = reactive<{ value: string }>({
   value: "",
@@ -40,7 +41,12 @@ watch(
   }
 );
 
-const remainingChars = computed(() => props.maxValue - field.value.length);
+const remainingChars = computed(() => {
+  if (props.maxValue) {
+    return Number(props.maxValue) - field.value.length;
+  }
+  return "";
+});
 
 const errorMessage = computed(() => {
   if (!formData.errors?.[props.path]) return "";
@@ -50,12 +56,12 @@ const errorMessage = computed(() => {
 
 function updateValue(newValue: string) {
   let value = props.valueApply ? props.valueApply(newValue) : newValue;
-  field.value = value;
+  field.value = String(value);
 
-  if (props.maxValue && value.length > props.maxValue) {
+  if (props.maxValue && field.value.length > Number(props.maxValue)) {
     field.value = newValue.slice(0, 255);
   } else {
-    validateField(value);
+    validateField(field.value);
   }
 }
 

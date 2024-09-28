@@ -1,6 +1,6 @@
 <template>
   <div class="form">
-    <base-form v-slot="{ formData, updateFormData }" :rules="formValidate">
+    <base-form v-slot="{ updateFormData }" :rules="formValidate">
       <description-field path="description" :updateFormData="updateFormData" />
       <radio-field
         path="confirmation"
@@ -17,7 +17,6 @@
 <script setup lang="ts">
 import { formValidate } from "../helpers/functions";
 import BaseForm from "../components/BaseForm.vue";
-import TextField from "../components/BaseFields/TextField.vue";
 import VatField from "../components/Fields/VatField.vue";
 import BruttoField from "../components/Fields/BruttoField.vue";
 import NettoField from "../components/Fields/NettoField.vue";

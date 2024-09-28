@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import { computed, provide, reactive, watch } from "vue";
-import { FormData, Errors } from "../helpers.ts/types";
+import { FormData, Errors } from "../helpers/types";
 import axios from "axios";
 
 const props = defineProps<{ rules?: (value: any) => void }>();
@@ -25,7 +25,6 @@ const isMessageShow = reactive<{ value: boolean }>({ value: false });
 const formData = reactive<{
   errors?: Errors | null;
   values: FormData;
-  isClear: boolean;
 }>({
   errors: null,
   values: {
@@ -78,7 +77,6 @@ async function sendData() {
 }
 
 function updateFormData(updatedValue: any) {
-  formData.isClear = false;
   if (updatedValue.errors) {
     formData.errors = updatedValue.errors;
   } else {
@@ -86,4 +84,3 @@ function updateFormData(updatedValue: any) {
   }
 }
 </script>
-<style scoped></style>

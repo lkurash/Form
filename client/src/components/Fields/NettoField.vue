@@ -11,15 +11,16 @@
 
 <script setup lang="ts">
 import { inject, reactive, watch } from "vue";
-import { FormData, ModelValue } from "../../helpers.ts/types";
+import { FormData } from "../../helpers.ts/types";
 import TextField from "../BaseFields/TextField.vue";
+import { UpdateFormData } from "@/src1 copy/helpers/types";
 
 const props = defineProps<{
   path: keyof FormData;
-  updateFormData: (value: string) => void;
+  updateFormData: UpdateFormData;
 }>();
 const isDisabled = reactive<{ value: boolean }>({ value: true });
-const { values } = inject("formData");
+const { values } = inject<FormData>("formData");
 
 watch(
   () => values.vat,
@@ -42,5 +43,3 @@ function fieldValidate(value: string) {
   }
 }
 </script>
-
-<style scoped></style>

@@ -8,11 +8,12 @@
   />
 </template>
 <script lang="ts" setup>
+import { UpdateFormData, FormData } from "@/src1 copy/helpers/types";
 import TextField from "../BaseFields/TextField.vue";
 
 const props = defineProps<{
   path: keyof FormData;
-  updateFormData: (value: string) => void;
+  updateFormData: UpdateFormData;
 }>();
 
 function fieldValidate(value: string) {
