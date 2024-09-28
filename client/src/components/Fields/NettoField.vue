@@ -13,7 +13,7 @@
 <script setup lang="ts">
 import { reactive, watch } from "vue";
 import { FormData, ModelValue } from "../../helpers.ts/types";
-import TextField from "../TextField.vue";
+import TextField from "./TextField.vue/TextField.vue";
 
 const props = defineProps<{
   path: keyof FormData;

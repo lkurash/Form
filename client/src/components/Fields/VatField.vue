@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 import { FormData, ModelValue } from "../helpers.ts/types";
-import SelectField from "./SelectField.vue";
+import SelectField from "../BaseFields/SelectField.vue";
 
 const props = defineProps<{
   path: keyof FormData;

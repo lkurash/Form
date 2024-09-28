@@ -35,11 +35,11 @@
 
 <script setup lang="ts">
 import BaseForm from "../components/BaseForm.vue";
-import TextField from "../components/Fields/TextField.vue";
+import TextField from "../components/BaseFields/TextField.vue";
 import VatField from "../components/Fields/VatField.vue";
-import BruttoField from "../components/Fields/price/BruttoField.vue";
-import NettoField from "../components/Fields/price/NettoField.vue";
-import RadioField from "../components/Fields/RadioField.vue";
+import BruttoField from "../components/Fields/BruttoField.vue";
+import NettoField from "../components/Fields/NettoField.vue";
+import RadioField from "../components/BaseFields/RadioField.vue";
 import formRules from "../helpers/functions";
 </script>
 

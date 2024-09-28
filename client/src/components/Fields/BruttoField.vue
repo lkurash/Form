@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 import { FormData, ModelValue } from "@/src3/types";
-import TextField from "../TextField.vue";
+import TextField from "../BaseFields/TextField.vue";
 
 const props = defineProps<{
   path: keyof FormData;
