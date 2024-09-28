@@ -1,34 +1,22 @@
 <template>
   <div class="form">
-    <base-form v-slot="props" :rules="formRules">
+    <base-form v-slot="{ formData, updateFormData }" :rules="formValidate">
       <text-field
-        max-value
+        max-value="255"
         path="description"
-        :modelValue="props.formData"
-        @update:modelValue="props.updateFormData"
+        :formData="formData"
+        :updateFormData="updateFormData"
         label="DESCRIPTION"
+        :fieldValidate="fieldValidate"
       />
       <radio-field
         path="confirmation"
-        :modelValue="props.formData"
-        @update:modelValue="props.updateFormData"
+        :updateFormData="updateFormData"
         label="CONFIRMATION"
       />
-      <vat-field
-        path="vat"
-        :modelValue="props.formData"
-        @update:modelValue="props.updateFormData"
-      />
-      <netto-field
-        path="netto"
-        :modelValue="props.formData"
-        @update:modelValue="props.updateFormData"
-      />
-      <brutto-field
-        path="brutto"
-        :modelValue="props.formData"
-        @update:modelValue="props.updateFormData"
-      />
+      <vat-field path="vat" :updateFormData="updateFormData" />
+      <netto-field path="netto" :updateFormData="updateFormData" />
+      <brutto-field path="brutto" :updateFormData="updateFormData" />
     </base-form>
   </div>
 </template>
@@ -40,7 +28,15 @@ import VatField from "../components/Fields/VatField.vue";
 import BruttoField from "../components/Fields/BruttoField.vue";
 import NettoField from "../components/Fields/NettoField.vue";
 import RadioField from "../components/BaseFields/RadioField.vue";
-import formRules from "../helpers/functions";
+import { formValidate } from "../helpers/functions";
+
+function fieldValidate(value: string) {
+  if (value.length >= 255) {
+    return { message: "Text must not exceed 255 characters" };
+  } else {
+    return null;
+  }
+}
 </script>
 
 <style>

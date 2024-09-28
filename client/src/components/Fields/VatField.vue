@@ -2,8 +2,7 @@
   <select-field
     label="VAT"
     :path="props.path"
-    :modelValue="modelValue"
-    @update:modelValue="updateModelValue"
+    :updateFormData="updateFormData"
     :options="['19%', '21%', '23%', '25%']"
   ></select-field>
 </template>
@@ -14,13 +13,9 @@ import SelectField from "../BaseFields/SelectField.vue";
 
 const props = defineProps<{
   path: keyof FormData;
-  modelValue: ModelValue;
+  updateFormData: (value: string) => void;
 }>();
-const emit = defineEmits(["update:modelValue"]);
 
-function updateModelValue(updatedValue: string) {
-  emit("update:modelValue", updatedValue);
-}
 </script>
 
 <style scoped></style>

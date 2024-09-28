@@ -2,10 +2,7 @@
   <div>
     <label v-if="label">{{ label }}</label>
     <input type="text" v-model="field.value" :disabled="props.disabled" />
-    <p
-      v-if="maxValue"
-      style="color: grey; margin-top: 5px; margin-left: 5px; font-size: 13px"
-    >
+    <p v-if="maxValue" class="max-value">
       You can enter {{ remainingChars }} characters
     </p>
     <div class="error-message">
@@ -21,35 +18,36 @@ import { FormData, ModelValue } from "../helpers.ts/types";
 const props = defineProps<{
   label?: string;
   path: keyof FormData;
-  modelValue: ModelValue;
+  updateFormData: (value: string) => void;
   maxValue?: boolean;
   disabled?: boolean;
-  rules?: (value: string) => { message?: string } | null;
+  fieldValidate?: (value: string) => { message?: string } | null;
   valueApply?: (value: string) => void;
 }>();
 
-const emit = defineEmits(["update:modelValue"]);
 const formData = inject("formData");
 
 const field = reactive<{ value: string }>({
   value: "",
 });
 
+const fieldValue = computed({
+  get() {
+    return formData.values[props.path];
+  },
+  set(newValue) {
+    emit("update:title", newValue);
+  },
+});
+
 watch(
   () => field.value,
-  (newValue, oldValue) => {
-    updateValue(newValue, oldValue);
+  (newValue) => {
+    updateValue(newValue);
   }
 );
 
-watch(
-  () => formData.values[props.path],
-  (newValue, oldValue) => {
-    updateValue(String(newValue), oldValue);
-  }
-);
-
-const remainingChars = computed(() => 255 - field.value.length);
+const remainingChars = computed(() => props.maxValue - field.value.length);
 
 const errorMessage = computed(() => {
   if (!formData.errors?.[props.path]) return "";
@@ -57,27 +55,30 @@ const errorMessage = computed(() => {
   return formData.errors[props.path]?.message;
 });
 
-function updateValue(newValue: string, oldValue: string) {
+function updateValue(newValue: string) {
   let value = props.valueApply ? props.valueApply(newValue) : newValue;
   field.value = value;
 
-  if (props.maxValue && value.length > 255) {
-    field.value = oldValue;
+  if (props.maxValue && value.length > props.maxValue) {
+    field.value = newValue.slice(0, 255);
   } else {
     validateField(value);
   }
 }
 
 function validateField(newValue: string) {
-  const validationError = props.rules ? props.rules(newValue) : {};
+  const validationError = props.fieldValidate
+    ? props.fieldValidate(newValue)
+    : {};
 
   if (validationError?.message) {
     setError(validationError.message);
   } else {
     clearError();
 
-    const updatedValue = { ...formData.values, [props.path]: newValue };
-    emit("update:modelValue", updatedValue);
+    const updatedValue = { [props.path]: newValue };
+
+    props.updateFormData(updatedValue);
   }
 }
 
@@ -86,7 +87,7 @@ function setError(message: string) {
     ...formData.errors,
     [props.path]: { message },
   };
-  emit("update:modelValue", { errors: updatedErrors });
+  props.updateFormData({ errors: updatedErrors });
 }
 
 function clearError() {
@@ -96,6 +97,14 @@ function clearError() {
   if (!errors[props.path]) return;
 
   delete errors[props.path];
-  emit("update:modelValue", { errors: errors });
+  props.updateFormData({ errors: errors });
 }
 </script>
+<style>
+.max-value {
+  color: grey;
+  margin-top: 5px;
+  margin-left: 5px;
+  font-size: 13px;
+}
+</style>

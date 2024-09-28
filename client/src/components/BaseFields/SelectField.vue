@@ -1,7 +1,7 @@
 <template>
   <div>
     <label v-if="label">{{ label }}</label>
-    <select v-model="field.value" placeholder="Choose VAT">
+    <select v-model="fieldValue" placeholder="Choose VAT">
       <option value="" disabled selected>Choose VAT</option>
       <template v-for="option in options" :key="option">
         <option :value="option">{{ option }}</option>
@@ -20,32 +20,21 @@ import { FormData, ModelValue } from "../helpers.ts/types";
 const props = defineProps<{
   label?: string;
   path: keyof FormData;
-  modelValue: ModelValue;
+  updateFormData: (value: string) => void;
   options: string[];
 }>();
-const emit = defineEmits(["update:modelValue"]);
+
 const formData = inject("formData");
 
-const field = reactive<{ value: string | null }>({
-  value: "",
+const fieldValue = computed({
+  get() {
+    return formData.values[props.path];
+  },
+  set(newValue) {
+    clearError();
+    props.updateFormData({ [props.path]: newValue });
+  },
 });
-
-watch(
-  () => field.value,
-  (newValue) => {
-    clearError();
-    const updatedValue = { ...formData.values, [props.path]: newValue };
-    emit("update:modelValue", updatedValue);
-  }
-);
-
-watch(
-  () => formData.values[props.path],
-  (newValue) => {
-    clearError();
-    field.value = newValue;
-  }
-);
 
 const errorMessage = computed(() => {
   if (!formData.errors?.[props.path]) return "";
@@ -60,7 +49,7 @@ function clearError() {
   if (!errors[props.path]) return;
 
   delete errors[props.path];
-  emit("update:modelValue", { errors: errors });
+  props.updateFormData({ errors: errors });
 }
 </script>
 

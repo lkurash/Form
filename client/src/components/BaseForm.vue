@@ -1,8 +1,12 @@
 <template>
-  <form @submit.prevent="submitForm" v-if="!isDataFetched.value">
+  <div class="congrats-message" v-if="isMessageShow">
+    <button class="close-btn" @click="closeMessage">×</button>
+    Congratulations! You've successfully completed the task!
+  </div>
+  <form @submit.prevent="submitForm" v-else>
     <slot
       name="default"
-      :formData="form"
+      :formData="formData"
       :updateFormData="updateFormData"
     ></slot>
     <div>
@@ -10,10 +14,6 @@
       <button class="button" type="submit">Save</button>
     </div>
   </form>
-  <div class="congrats-message" v-else>
-    <button class="close-btn" @click="closeMessage">×</button>
-    Congratulations! You've successfully completed the task!
-  </div>
 </template>
 
 <script setup lang="ts">
@@ -22,9 +22,9 @@ import { FormData, Errors } from "../helpers.ts/types";
 import axios from "axios";
 
 const props = defineProps<{ rules?: (value: any) => void }>();
-const isDataFetched = reactive<{ value: boolean }>({ value: false });
+const isMessageShow = reactive(false);
 
-const form = reactive<{
+const formData = reactive<{
   errors?: Errors | null;
   values: FormData;
 }>({
@@ -38,10 +38,10 @@ const form = reactive<{
   },
 });
 
-provide("formData", form);
+provide("formData", formData);
 
 const calculateBrutto = computed(() => {
-  const { netto, vat } = form.values;
+  const { netto, vat } = formData.values;
   if (netto && vat) {
     return netto + (netto * parseFloat(vat)) / 100;
   }
@@ -49,16 +49,16 @@ const calculateBrutto = computed(() => {
 });
 
 watch(
-  () => [form.values.netto, form.values.vat],
+  () => [formData.values.netto, formData.values.vat],
   () => {
-    form.values.brutto = calculateBrutto.value;
+    formData.values.brutto = calculateBrutto.value;
   }
 );
 
 async function submitForm() {
-  form.errors = props.rules!(form.values);
+  formData.errors = props.rules!(formData.values);
 
-  if (Object.keys(form.errors).length === 0) {
+  if (Object.keys(formData.errors).length === 0) {
     await sendData();
   }
 }
@@ -67,12 +67,12 @@ async function sendData() {
   try {
     const response = await axios.post(
       "http://localhost:3000/api/financial-info",
-      form.values,
+      formData.values,
       {
         headers: { "Content-Type": "application/json" },
       }
     );
-    isDataFetched.value = !!response;
+    isMessageShow = !!response;
     clearForm();
   } catch (error) {
     console.error(error);
@@ -81,19 +81,20 @@ async function sendData() {
 
 function updateFormData(updatedValue: any) {
   if (updatedValue.errors) {
-    form.errors = updatedValue.errors;
+    formData.errors = updatedValue.errors;
   } else {
-    Object.assign(form.values, updatedValue);
+    Object.assign(formData.values, updatedValue);
   }
 }
+console.log(formData);
 
 function clearForm() {
-  form.values.description = "";
-  form.values.confirmation = null;
-  form.values.vat = null;
-  form.values.netto = "";
-  form.values.brutto = "";
-  form.errors = null;
+  formData.values.description = "";
+  formData.values.confirmation = null;
+  formData.values.vat = null;
+  formData.values.netto = "";
+  formData.values.brutto = "";
+  formData.errors = null;
 }
 
 function closeMessage() {

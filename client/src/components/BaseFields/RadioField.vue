@@ -1,28 +1,26 @@
 <template>
   <div>
     <label v-if="props.label">{{ props.label }}</label>
-    <div style="display: flex; height: 50px">
-      <div style="display: flex; justify-self: center; align-items: center">
+    <div class="container">
+      <div class="field">
         <input
           type="radio"
           id="yes"
           :value="true"
-          v-model="field.value"
+          v-model="fieldValue"
           :name="props.path"
-          style="margin-left: 10px"
         />
-        <label for="yes" style="margin-left: 10px">Yes</label>
+        <label for="yes">Yes</label>
       </div>
-      <div style="display: flex; justify-self: center; align-items: center">
+      <div class="field">
         <input
           type="radio"
           id="no"
           :value="false"
-          v-model="field.value"
+          v-model="fieldValue"
           :name="props.path"
-          style="margin-left: 10px"
         />
-        <label for="no" style="margin-left: 10px">No</label>
+        <label for="no">No</label>
       </div>
     </div>
     <div class="error-message">
@@ -38,31 +36,22 @@ import { FormData, ModelValue } from "../helpers.ts/types";
 const props = defineProps<{
   label?: string;
   path: keyof FormData;
-  modelValue: ModelValue;
+  updateFormData: (value: string) => void;
 }>();
-const emit = defineEmits(["update:modelValue"]);
+
 const formData = inject("formData");
 
-const field = reactive<{ value: boolean | null }>({
-  value: null,
+const fieldValue = computed({
+  get() {
+    return formData.values[props.path];
+  },
+  set(newValue) {
+    clearError();
+    props.updateFormData({
+      [props.path]: newValue,
+    });
+  },
 });
-
-watch(
-  () => field.value,
-  (newValue) => {
-    clearError();
-    const updatedValue = { ...formData.values, [props.path]: newValue };
-    emit("update:modelValue", updatedValue);
-  }
-);
-
-watch(
-  () => formData.values[props.path],
-  (newValue) => {
-    clearError();
-    field.value = newValue;
-  }
-);
 
 const errorMessage = computed(() => {
   if (!formData.errors?.[props.path]) return "";
@@ -77,14 +66,32 @@ function clearError() {
   if (!errors[props.path]) return;
 
   delete errors[props.path];
-  emit("update:modelValue", { errors: errors });
+  props.updateFormData({ errors: errors });
 }
 </script>
 
 <style scoped>
+.container {
+  display: flex;
+  height: 50px;
+}
+
+.field {
+  display: flex;
+  justify-self: center;
+  align-items: center;
+}
 input,
 label {
   margin: 0;
   padding: 0;
+}
+
+input {
+  margin-left: 10px;
+}
+
+label {
+  margin-left: 10px;
 }
 </style>
