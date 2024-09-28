@@ -1,4 +1,4 @@
-# Form Implementation
+# Invoice Details Form
 
 This project implements a dynamic web form with the following features:
 
@@ -31,7 +31,7 @@ This project implements a dynamic web form with the following features:
    - Displays success status upon valid submission.
 
 ## Technologies Used:
-- HTML
+- Vue
 - CSS
 - TypeScript
 - JavaScript
@@ -42,7 +42,9 @@ This project implements a dynamic web form with the following features:
 ### Running the Project
 
 1. **Clone the Repository:**
-
+   ```bash
    git clone https://github.com/lkurash/Form.git
 
+2. **Start:**
+   ```bash
    ./run
