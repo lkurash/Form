@@ -1,7 +1,7 @@
 <template>
   <div>
     <label>Price brutto EUR</label>
-    <input type="text" v-model="field.value" disabled />
+    <input type="text" v-model="brutto.value" disabled />
   </div>
 </template>
 
