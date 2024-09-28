@@ -2,13 +2,13 @@
 
 This project implements a dynamic web form.
 
-# BaseForm
+#### BaseForm
 
 - **BaseForm** is the primary component that creates a dynamic form. It uses a slot for rendering, allowing easy external markup changes. This component can accept any data and process it.
 
 - **Validation**: Before submitting the data, the form is validated using a function passed through `props.rules`. This enables the use of shared validation logic for different forms.
 
-## InvoiceForm
+#### InvoiceForm
 
 - **InvoiceForm** is a specific form that displays `BaseForm` and has fields with path attributes. Each path corresponds to a key in the form object, allowing the binding of entered values.
 
@@ -16,7 +16,7 @@ This project implements a dynamic web form.
 
 - **BaseFields** are reusable components for individual form fields. Each of them updates data and handles errors. `TextField` has a `props.valueApply`, which allows for modifying the entered data (for example, replacing commas with dots).
 
-## Fields
+#### Fields
 
 - **Fields** are special components that pass additional validation or data modification functions to `BaseFields`. This allows for the addition of specific logic for each field.
 
