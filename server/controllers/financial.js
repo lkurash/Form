@@ -34,6 +34,4 @@ class FinancialController {
   }
 }
 
-module.exports = FinancialController;
-
 module.exports = new FinancialController();

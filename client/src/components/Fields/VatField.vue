@@ -2,25 +2,19 @@
   <select-field
     label="VAT"
     :path="props.path"
-    :modelValue="modelValue"
-    @update:modelValue="updateModelValue"
+    :updateFormData="updateFormData"
     :options="['19%', '21%', '23%', '25%']"
+    placeholder="Choose VAT"
   ></select-field>
 </template>
 
 <script setup lang="ts">
-import { FormData, ModelValue } from "../helpers.ts/types";
-import SelectField from "./SelectField.vue";
+import { FormData } from "../helpers.ts/types";
+import SelectField from "../BaseFields/SelectField.vue";
+import { UpdateFormData } from "../../helpers/types";
 
 const props = defineProps<{
   path: keyof FormData;
-  modelValue: ModelValue;
+  updateFormData: UpdateFormData
 }>();
-const emit = defineEmits(["update:modelValue"]);
-
-function updateModelValue(updatedValue: string) {
-  emit("update:modelValue", updatedValue);
-}
 </script>
-
-<style scoped></style>

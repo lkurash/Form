@@ -1,9 +1,10 @@
-export default function formRules(data: any) {
+export function formValidate(data: any) {
   const errors: Record<string, any> = {};
 
   if (!data.description || data.description.length === 0) {
     errors.description = { message: "Text is required" };
-  } else if (data.description.length > 255) {
+  }
+  if (data.description.length >= 255) {
     errors.description = { message: "Text must not exceed 255 characters" };
   }
 

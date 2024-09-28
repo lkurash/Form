@@ -1,32 +1,29 @@
 <template>
   <text-field
     label="Price netto EUR"
-    :modelValue="props.modelValue"
     :valueApply="valueApply"
-    @update:modelValue="updateModelValue"
-    :rules="rules"
+    :updateFormData="updateFormData"
+    :fieldValidate="fieldValidate"
     :path="props.path"
     :disabled="isDisabled.value"
   ></text-field>
 </template>
 
 <script setup lang="ts">
-import { reactive, watch } from "vue";
-import { FormData, ModelValue } from "../../helpers.ts/types";
-import TextField from "../TextField.vue";
+import { inject, reactive, watch } from "vue";
+import { FormData } from "../../helpers.ts/types";
+import TextField from "../BaseFields/TextField.vue";
+import { UpdateFormData } from "@/src1 copy/helpers/types";
 
 const props = defineProps<{
   path: keyof FormData;
-  modelValue: ModelValue;
+  updateFormData: UpdateFormData;
 }>();
 const isDisabled = reactive<{ value: boolean }>({ value: true });
-const emit = defineEmits(["update:modelValue"]);
+const { values } = inject<FormData>("formData");
 
-function updateModelValue(updatedValue: string) {
-  emit("update:modelValue", updatedValue);
-}
 watch(
-  () => props.modelValue.values.vat,
+  () => values.vat,
   (newValue) => {
     isDisabled.value = !newValue;
   }
@@ -36,7 +33,7 @@ function valueApply(value: string) {
   return value.replace(/,/g, ".").trim();
 }
 
-function rules(value: string) {
+function fieldValidate(value: string) {
   const numericValue = +value;
 
   if (isNaN(numericValue) || typeof numericValue !== "number") {
@@ -46,5 +43,3 @@ function rules(value: string) {
   }
 }
 </script>
-
-<style scoped></style>

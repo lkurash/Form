@@ -10,7 +10,4 @@ export type Errors = {
   [key in keyof FormData]?: { message: string };
 };
 
-export type ModelValue = {
-  values: FormData;
-  errors?: Errors | null;
-};
+export type UpdateFormData = (value: Record<string, string>) => void;

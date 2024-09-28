@@ -1,46 +1,27 @@
 <template>
   <div class="form">
-    <base-form v-slot="props" :rules="formRules">
-      <text-field
-        max-value
-        path="description"
-        :modelValue="props.formData"
-        @update:modelValue="props.updateFormData"
-        label="DESCRIPTION"
-      />
+    <base-form v-slot="{ updateFormData }" :rules="formValidate">
+      <description-field path="description" :updateFormData="updateFormData" />
       <radio-field
         path="confirmation"
-        :modelValue="props.formData"
-        @update:modelValue="props.updateFormData"
+        :updateFormData="updateFormData"
         label="CONFIRMATION"
       />
-      <vat-field
-        path="vat"
-        :modelValue="props.formData"
-        @update:modelValue="props.updateFormData"
-      />
-      <netto-field
-        path="netto"
-        :modelValue="props.formData"
-        @update:modelValue="props.updateFormData"
-      />
-      <brutto-field
-        path="brutto"
-        :modelValue="props.formData"
-        @update:modelValue="props.updateFormData"
-      />
+      <vat-field path="vat" :updateFormData="updateFormData" />
+      <netto-field path="netto" :updateFormData="updateFormData" />
+      <brutto-field path="brutto" :updateFormData="updateFormData" />
     </base-form>
   </div>
 </template>
 
 <script setup lang="ts">
+import { formValidate } from "../helpers/functions";
 import BaseForm from "../components/BaseForm.vue";
-import TextField from "../components/Fields/TextField.vue";
 import VatField from "../components/Fields/VatField.vue";
-import BruttoField from "../components/Fields/price/BruttoField.vue";
-import NettoField from "../components/Fields/price/NettoField.vue";
-import RadioField from "../components/Fields/RadioField.vue";
-import formRules from "../helpers/functions";
+import BruttoField from "../components/Fields/BruttoField.vue";
+import NettoField from "../components/Fields/NettoField.vue";
+import RadioField from "../components/BaseFields/RadioField.vue";
+import DescriptionField from "../components/Fields/DescriptionField.vue";
 </script>
 
 <style>
@@ -75,7 +56,7 @@ select:focus {
   background-color: #007bff;
   color: white;
   padding: 10px 20px;
-  margin: 10px;
+  margin-top: 10px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -86,7 +67,8 @@ select:focus {
   background-color: #0056b3;
 }
 
-label {
+label,
+span {
   font-weight: bold;
   display: block;
   margin-bottom: 5px;
@@ -98,14 +80,6 @@ label {
   font-size: 12px;
   margin-top: 5px;
   height: 20px;
-}
-
-.form-title {
-  font-size: 24px;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 20px;
-  text-align: center;
 }
 
 .congrats-message {
