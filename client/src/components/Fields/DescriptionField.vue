@@ -8,7 +8,7 @@
   />
 </template>
 <script lang="ts" setup>
-import { UpdateFormData, FormData } from "@/src1 copy/helpers/types";
+import { UpdateFormData, FormData } from "../../helpers/types";
 import TextField from "../BaseFields/TextField.vue";
 
 const props = defineProps<{

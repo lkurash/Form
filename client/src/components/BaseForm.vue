@@ -18,50 +18,25 @@
 </template>
 
 <script setup lang="ts">
-import { computed, provide, reactive, watch } from "vue";
-import { FormData, Errors } from "../helpers/types";
+import { provide, reactive } from "vue";
 import axios from "axios";
 
-const props = defineProps<{ rules?: (value: any) => void }>();
+const props = defineProps<{
+  rules?: (value: any) => void;
+  formValues: any;
+}>();
+
 const isMessageShow = reactive<{ completed: boolean; error: boolean }>({
   completed: false,
   error: false,
 });
 
-const formData = reactive<{
-  errors?: Errors | null;
-  values: FormData;
-}>({
-  errors: null,
-  values: {
-    description: "",
-    confirmation: null,
-    vat: "",
-    netto: "",
-    brutto: "",
-  },
-});
+const formData = reactive(props.formValues);
 
 provide("formData", formData);
 
-const calculateBrutto = computed(() => {
-  const { netto, vat } = formData.values;
-  if (netto && vat) {
-    return netto + (netto * parseFloat(vat)) / 100;
-  }
-  return "";
-});
-
-watch(
-  () => [formData.values.netto, formData.values.vat],
-  () => {
-    formData.values.brutto = calculateBrutto.value;
-  }
-);
-
 async function submitForm() {
   formData.errors = props.rules!(formData.values);
-
   if (Object.keys(formData.errors).length === 0) {
     await sendData();
   }

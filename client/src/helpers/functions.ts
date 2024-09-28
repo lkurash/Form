@@ -1,5 +1,5 @@
 export function formValidate(data: any) {
-  const errors: Record<string, any> = {};
+  const errors: Record<string, { message: string }> = {};
 
   if (!data.description || data.description.length === 0) {
     errors.description = { message: "Text is required" };
@@ -22,3 +22,14 @@ export function formValidate(data: any) {
 
   return errors;
 }
+
+export const invoiceForm = {
+  errors: {} as Record<string, { message: string }>,
+  values: {
+    description: "",
+    confirmation: null as boolean | null,
+    vat: "",
+    netto: "",
+    brutto: "",
+  },
+};

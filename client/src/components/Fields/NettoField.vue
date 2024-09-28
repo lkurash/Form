@@ -11,19 +11,18 @@
 
 <script setup lang="ts">
 import { inject, reactive, watch } from "vue";
-import { FormData } from "../../helpers.ts/types";
+import { Form, UpdateFormData, FormData } from "../../helpers/types";
 import TextField from "../BaseFields/TextField.vue";
-import { UpdateFormData } from "@/src1 copy/helpers/types";
 
 const props = defineProps<{
   path: keyof FormData;
   updateFormData: UpdateFormData;
 }>();
 const isDisabled = reactive<{ value: boolean }>({ value: true });
-const { values } = inject<FormData>("formData");
+const formData = inject<Form>("formData");
 
 watch(
-  () => values.vat,
+  () => formData?.values.vat,
   (newValue) => {
     isDisabled.value = !newValue;
   }

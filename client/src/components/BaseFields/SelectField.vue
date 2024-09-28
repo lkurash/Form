@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import { computed, inject } from "vue";
-import { FormData } from "../helpers.ts/types";
+import { FormData, Form } from "../../helpers/types";
 import { UpdateFormData } from "../../helpers/types";
 
 const props = defineProps<{
@@ -26,11 +26,11 @@ const props = defineProps<{
   placeholder?: string;
 }>();
 
-const formData = inject<FormData>("formData");
+const formData = inject<Form>("formData");
 
 const fieldValue = computed({
   get() {
-    return formData.values[props.path];
+    return formData?.values[props.path];
   },
   set(newValue) {
     clearError();
@@ -39,19 +39,19 @@ const fieldValue = computed({
 });
 
 const errorMessage = computed(() => {
-  if (!formData.errors?.[props.path]) return "";
+  if (!formData?.errors?.[props.path]) return "";
 
   return formData.errors[props.path]?.message;
 });
 
 function clearError() {
   const errors = {
-    ...formData.errors,
+    ...formData?.errors,
   };
   if (!errors[props.path]) return;
 
   delete errors[props.path];
-  props.updateFormData({ errors: errors });
+  props.updateFormData({ errors });
 }
 </script>
 
