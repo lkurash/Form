@@ -1,6 +1,9 @@
 <template>
-  <div class="congrats-message" v-if="isMessageShow.value">
+  <div class="congrats-message" v-if="isMessageShow.completed">
     Congratulations! You've successfully completed the task!
+  </div>
+  <div class="error-message" v-else-if="isMessageShow.error">
+    Oops! Something went wrong.
   </div>
   <form @submit.prevent="submitForm" v-else>
     <slot
@@ -20,7 +23,10 @@ import { FormData, Errors } from "../helpers/types";
 import axios from "axios";
 
 const props = defineProps<{ rules?: (value: any) => void }>();
-const isMessageShow = reactive<{ value: boolean }>({ value: false });
+const isMessageShow = reactive<{ completed: boolean; error: boolean }>({
+  completed: false,
+  error: false,
+});
 
 const formData = reactive<{
   errors?: Errors | null;
@@ -70,9 +76,9 @@ async function sendData() {
         headers: { "Content-Type": "application/json" },
       }
     );
-    isMessageShow.value = !!response;
+    isMessageShow.completed = !!response;
   } catch (error) {
-    console.error(error);
+    isMessageShow.error = !!error;
   }
 }
 
@@ -84,3 +90,47 @@ function updateFormData(updatedValue: any) {
   }
 }
 </script>
+<style scoped>
+.congrats-message {
+  background-color: #e0ffe0;
+  border: 2px solid #4caf50;
+  color: #2e7d32;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  width: 300px;
+  margin: 20px auto;
+  position: relative;
+  animation: slide-in 0.5s ease-out;
+}
+
+.error-message {
+  background-color: #e0ffe0;
+  border: 2px solid #af4c4c;
+  color: #0a0d0a;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  width: 300px;
+  margin: 20px auto;
+  position: relative;
+  animation: slide-in 0.5s ease-out;
+}
+
+@keyframes slide-in {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>

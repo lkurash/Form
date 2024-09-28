@@ -81,46 +81,4 @@ span {
   margin-top: 5px;
   height: 20px;
 }
-
-.congrats-message {
-  background-color: #e0ffe0;
-  border: 2px solid #4caf50;
-  color: #2e7d32;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  font-size: 18px;
-  font-weight: bold;
-  text-align: center;
-  width: 300px;
-  margin: 20px auto;
-  position: relative;
-  animation: slide-in 0.5s ease-out;
-}
-
-@keyframes slide-in {
-  0% {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.close-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: transparent;
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
-  color: #2e7d32;
-}
-
-.close-btn:hover {
-  color: #0b260d;
-}
 </style>
