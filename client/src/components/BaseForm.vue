@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, watch } from "vue";
+import { computed, provide, reactive, watch } from "vue";
 import { FormData, Errors } from "../helpers.ts/types";
 import axios from "axios";
 
@@ -37,6 +37,8 @@ const form = reactive<{
     brutto: "",
   },
 });
+
+provide("formData", form);
 
 const calculateBrutto = computed(() => {
   const { netto, vat } = form.values;

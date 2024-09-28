@@ -1,26 +1,20 @@
 <template>
-  <text-field
-    label="Price brutto EUR"
-    :path="props.path"
-    :modelValue="modelValue"
-    @update:modelValue="updateModelValue"
-    disabled
-  ></text-field>
+  <div>
+    <label>Price brutto EUR</label>
+    <input type="text" v-model="values[props.path]" disabled />
+  </div>
 </template>
 
 <script setup lang="ts">
-import { FormData, ModelValue } from "@/src3/types";
+import { FormData } from "@/src3/types";
+import { inject } from "vue";
 import TextField from "../BaseFields/TextField.vue";
 
 const props = defineProps<{
   path: keyof FormData;
-  modelValue: ModelValue;
 }>();
-const emit = defineEmits(["update:modelValue"]);
 
-function updateModelValue(updatedValue: string) {
-  emit("update:modelValue", updatedValue);
-}
+const { values } = inject("formData");
 </script>
 
 <style scoped></style>

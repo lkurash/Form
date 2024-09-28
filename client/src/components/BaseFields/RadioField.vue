@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, watch } from "vue";
+import { computed, inject, reactive, watch } from "vue";
 import { FormData, ModelValue } from "../helpers.ts/types";
 
 const props = defineProps<{
@@ -41,6 +41,7 @@ const props = defineProps<{
   modelValue: ModelValue;
 }>();
 const emit = defineEmits(["update:modelValue"]);
+const formData = inject("formData");
 
 const field = reactive<{ value: boolean | null }>({
   value: null,
@@ -56,7 +57,7 @@ watch(
 );
 
 watch(
-  () => props.modelValue.values[props.path],
+  () => formData.values[props.path],
   (newValue) => {
     clearError();
     field.value = newValue;
@@ -64,9 +65,9 @@ watch(
 );
 
 const errorMessage = computed(() => {
-  if (!props.modelValue.errors?.[props.path]) return "";
+  if (!formData.errors?.[props.path]) return "";
 
-  return props.modelValue.errors[props.path]?.message;
+  return formData.errors[props.path]?.message;
 });
 
 function clearError() {

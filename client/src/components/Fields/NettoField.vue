@@ -11,22 +11,24 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, watch } from "vue";
+import { inject, reactive, watch } from "vue";
 import { FormData, ModelValue } from "../../helpers.ts/types";
-import TextField from "./TextField.vue/TextField.vue";
+import TextField from "../BaseFields/TextField.vue";
 
 const props = defineProps<{
   path: keyof FormData;
   modelValue: ModelValue;
 }>();
 const isDisabled = reactive<{ value: boolean }>({ value: true });
+const { values } = inject("formData");
+
 const emit = defineEmits(["update:modelValue"]);
 
 function updateModelValue(updatedValue: string) {
   emit("update:modelValue", updatedValue);
 }
 watch(
-  () => props.modelValue.values.vat,
+  () => values.vat,
   (newValue) => {
     isDisabled.value = !newValue;
   }
