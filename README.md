@@ -12,7 +12,7 @@ This project implements a dynamic web form.
    InvoiceForm is a specific form that displays BaseForm and has fields with path attributes. Each path corresponds to a key in the form object, allowing the binding of entered values.
 
 3. ** BaseFields
-   BaseFields are reusable components for individual form fields. Each of them updates data, handles errors, and has a props.valueApply, allowing for data modification (for example, replacing commas with dots).
+   BaseFields are reusable components for individual form fields. Each of them updates data and handles errors. TextField has a props.valueApply, which allows for modifying the entered data (for example, replacing commas with dots).
 
 4. ** Fields
    Fields are special components that pass additional validation or data modification functions to BaseFields. This allows for the addition of specific logic for each field.
