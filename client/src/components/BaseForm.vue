@@ -64,7 +64,7 @@ async function submitForm() {
 async function sendData() {
   try {
     const response = await axios.post(
-      "http://localhost:3000/api/submit-financial-info",
+      "http://localhost:3000/api/financial-info",
       form.values,
       {
         headers: { "Content-Type": "application/json" },
