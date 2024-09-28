@@ -1,14 +1,7 @@
 <template>
   <div class="form">
     <base-form v-slot="{ formData, updateFormData }" :rules="formValidate">
-      <text-field
-        max-value="255"
-        path="description"
-        :formData="formData"
-        :updateFormData="updateFormData"
-        label="DESCRIPTION"
-        :fieldValidate="fieldValidate"
-      />
+      <description-field path="description" :updateFormData="updateFormData" />
       <radio-field
         path="confirmation"
         :updateFormData="updateFormData"
@@ -22,21 +15,14 @@
 </template>
 
 <script setup lang="ts">
+import { formValidate } from "../helpers/functions";
 import BaseForm from "../components/BaseForm.vue";
 import TextField from "../components/BaseFields/TextField.vue";
 import VatField from "../components/Fields/VatField.vue";
 import BruttoField from "../components/Fields/BruttoField.vue";
 import NettoField from "../components/Fields/NettoField.vue";
 import RadioField from "../components/BaseFields/RadioField.vue";
-import { formValidate } from "../helpers/functions";
-
-function fieldValidate(value: string) {
-  if (value.length >= 255) {
-    return { message: "Text must not exceed 255 characters" };
-  } else {
-    return null;
-  }
-}
+import DescriptionField from "../components/Fields/DescriptionField.vue";
 </script>
 
 <style>

@@ -2,11 +2,13 @@
   <div>
     <label v-if="label">{{ label }}</label>
     <input type="text" v-model="field.value" :disabled="props.disabled" />
-    <p v-if="maxValue" class="max-value">
-      You can enter {{ remainingChars }} characters
-    </p>
-    <div class="error-message">
-      {{ errorMessage }}
+    <div class="container-message">
+      <div class="error-message">
+        {{ errorMessage }}
+      </div>
+      <div v-if="maxValue" class="max-value">
+        <span>You can enter {{ remainingChars }} characters</span>
+      </div>
     </div>
   </div>
 </template>
@@ -93,9 +95,14 @@ function clearError() {
 </script>
 <style>
 .max-value {
-  margin: 5px 0px 0px 5px;
+  margin: 0;
   color: grey;
   margin-top: 5px;
   font-size: 13px;
+  height: 20px;
+}
+.container-message {
+  display: flex;
+  justify-content: space-between;
 }
 </style>
