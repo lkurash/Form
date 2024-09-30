@@ -1,4 +1,4 @@
-const { formValidate } = require("../helpers/functions");
+const { invoiceValidationRules } = require("../../helpers/functions");
 
 const emptyFormData = {
   description: "",
@@ -18,7 +18,7 @@ const formDataWithEmptyDescription = {
 
 const formDataWithLongDescription = {
   description:
-    "123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345",
+    "12345678901234567890123456789012345678901234 5678901234567890123456 78901234567890123456789 01234567890123456789012345678901234567890123456789012 3456789012345678901234567890123456789012345678901234 5678901234567890123456789012345678901234567890123456789012345",
   confirmation: true,
   vat: "21%",
   netto: "111",
@@ -49,9 +49,9 @@ const formDataWithEmptyNetto = {
   brutto: "111",
 };
 
-describe("formValidate", () => {
+describe("invoiceValidationRules", () => {
   test("should return errors for all fields when form is empty", () => {
-    expect(formValidate(emptyFormData)).toEqual({
+    expect(invoiceValidationRules(emptyFormData)).toEqual({
       confirmation: { message: "Confirmation is required" },
       description: { message: "Text is required" },
       netto: { message: "Netto value is required" },
@@ -60,31 +60,31 @@ describe("formValidate", () => {
   });
 
   test("should return error when description field is empty", () => {
-    expect(formValidate(formDataWithEmptyDescription)).toEqual({
+    expect(invoiceValidationRules(formDataWithEmptyDescription)).toEqual({
       description: { message: "Text is required" },
     });
   });
 
   test("should return error when description field length > 255", () => {
-    expect(formValidate(formDataWithLongDescription)).toEqual({
+    expect(invoiceValidationRules(formDataWithLongDescription)).toEqual({
       description: { message: "Text must not exceed 255 characters" },
     });
   });
 
   test("should return error when confirmation field is empty", () => {
-    expect(formValidate(formDataWithEmptyConfirmation)).toEqual({
+    expect(invoiceValidationRules(formDataWithEmptyConfirmation)).toEqual({
       confirmation: { message: "Confirmation is required" },
     });
   });
 
   test("should return error when VAT field is empty", () => {
-    expect(formValidate(formDataWithEmptyVat)).toEqual({
+    expect(invoiceValidationRules(formDataWithEmptyVat)).toEqual({
       vat: { message: "VAT is required" },
     });
   });
 
   test("should return error when netto field is empty", () => {
-    expect(formValidate(formDataWithEmptyNetto)).toEqual({
+    expect(invoiceValidationRules(formDataWithEmptyNetto)).toEqual({
       netto: { message: "Netto value is required" },
     });
   });

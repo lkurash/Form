@@ -1,4 +1,4 @@
-export type FormData = {
+export type FormValues = {
   description: string;
   confirmation: boolean | null;
   vat: string | null;
@@ -7,12 +7,12 @@ export type FormData = {
 };
 
 export type Errors = {
-  [key in keyof FormData]?: { message: string };
+  [key in keyof FormValues]?: { message: string };
 };
 
 export type Form = {
   errors?: Errors | null;
-  values: FormData;
+  values: FormValues;
 };
 
-export type UpdateFormData = (value: any) => void;
+export type UpdateFormValues = (value: any) => void;

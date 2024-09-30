@@ -1,16 +1,12 @@
 <template>
-  <div class="congrats-message" v-if="isMessageShow.completed">
+  <div class="congrats-message" v-if="isSuccessMessageShown.value">
     Congratulations! You've successfully completed the task!
   </div>
-  <div class="error-message" v-else-if="isMessageShow.error">
+  <div class="error-message" v-else-if="isErrorMessageShown.value">
     Oops! Something went wrong.
   </div>
   <form @submit.prevent="submitForm" v-else>
-    <slot
-      name="default"
-      :formData="formData"
-      :updateFormData="updateFormData"
-    ></slot>
+    <slot name="default" :updateFormValues="updateFormValues"></slot>
     <div>
       <button class="button" type="submit">Save</button>
     </div>
@@ -22,46 +18,42 @@ import { provide, reactive } from "vue";
 import axios from "axios";
 
 const props = defineProps<{
-  rules?: (value: any) => void;
   formValues: any;
 }>();
 
-const isMessageShow = reactive<{ completed: boolean; error: boolean }>({
-  completed: false,
-  error: false,
-});
+const isSuccessMessageShown = reactive<{ value: boolean }>({ value: false });
+const isErrorMessageShown = reactive<{ value: boolean }>({ value: false });
 
-const formData = reactive(props.formValues);
+const formValues = reactive(props.formValues);
 
-provide("formData", formData);
+provide("formValues", formValues);
 
 async function submitForm() {
-  formData.errors = props.rules!(formData.values);
-  if (Object.keys(formData.errors).length === 0) {
-    await sendData();
-  }
+  formValues.errors = { ...props.formValues.validateForm() };
+  if (!props.formValues.isValid) return formValues.errors;
+  await sendData();
 }
 
 async function sendData() {
   try {
     const response = await axios.post(
       "http://localhost:3000/api/financial-info",
-      formData.values,
+      formValues.values,
       {
         headers: { "Content-Type": "application/json" },
       }
     );
-    isMessageShow.completed = !!response;
+    isSuccessMessageShown.value = !!response;
   } catch (error) {
-    isMessageShow.error = !!error;
+    isErrorMessageShown.value = !!error;
   }
 }
 
-function updateFormData(updatedValue: any) {
-  if (updatedValue.errors) {
-    formData.errors = updatedValue.errors;
+function updateFormValues(updatedFieldValue: any) {
+  if (updatedFieldValue.errors) {
+    formValues.errors = updatedFieldValue.errors;
   } else {
-    Object.assign(formData.values, updatedValue);
+    Object.assign(formValues.values, updatedFieldValue);
   }
 }
 </script>

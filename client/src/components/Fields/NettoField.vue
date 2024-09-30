@@ -2,7 +2,7 @@
   <text-field
     label="Price netto EUR"
     :valueApply="valueApply"
-    :updateFormData="updateFormData"
+    :updateFormValues="updateFormValues"
     :fieldValidate="fieldValidate"
     :path="props.path"
     :disabled="isDisabled.value"
@@ -11,18 +11,18 @@
 
 <script setup lang="ts">
 import { inject, reactive, watch } from "vue";
-import { Form, UpdateFormData, FormData } from "@/helpers/types";
+import { Form, UpdateFormValues, FormValues } from "@/helpers/types";
 import TextField from "@/components/BaseFields/TextField.vue";
 
 const props = defineProps<{
-  path: keyof FormData;
-  updateFormData: UpdateFormData;
+  path: keyof FormValues;
+  updateFormValues: UpdateFormValues;
 }>();
 const isDisabled = reactive<{ value: boolean }>({ value: true });
-const formData = inject<Form>("formData");
+const formValues = inject<Form>("formValues");
 
 watch(
-  () => formData?.values.vat,
+  () => formValues?.values.vat,
   (newValue) => {
     isDisabled.value = !newValue;
   }

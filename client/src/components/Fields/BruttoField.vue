@@ -6,27 +6,27 @@
 </template>
 
 <script setup lang="ts">
-import { Form, FormData, UpdateFormData } from "@/helpers/types";
+import { Form, FormValues, UpdateFormValues } from "@/helpers/types";
 import { inject, reactive, watch } from "vue";
 
 const props = defineProps<{
-  path: keyof FormData;
-  updateFormData: UpdateFormData;
+  path: keyof FormValues;
+  updateFormValues: UpdateFormValues;
 }>();
 const brutto = reactive<{ value: string }>({ value: "" });
-const formData = inject<Form>("formData");
+const formValues = inject<Form>("formValues");
 
 watch(
-  () => [formData?.values.netto, formData?.values.vat],
+  () => [formValues?.values.netto, formValues?.values.vat],
   () => {
-    if (formData?.values) {
-      const updatedValue = { [props.path]: calculateBrutto(formData.values) };
-      props.updateFormData(updatedValue);
+    if (formValues?.values) {
+      const updatedValue = { [props.path]: calculateBrutto(formValues.values) };
+      props.updateFormValues(updatedValue);
     }
   }
 );
 
-function calculateBrutto(values: FormData) {
+function calculateBrutto(values: FormValues) {
   const { netto, vat } = values;
   if (netto && vat) {
     let result = Number(netto) + (Number(netto) * parseFloat(vat)) / 100;

@@ -15,19 +15,19 @@
 
 <script setup lang="ts">
 import { computed, inject, reactive, watch } from "vue";
-import { UpdateFormData, FormData } from "@/helpers/types";
+import { UpdateFormValues, FormValues } from "@/helpers/types";
 
 const props = defineProps<{
   label?: string;
-  path: keyof FormData;
-  updateFormData: UpdateFormData;
+  path: keyof FormValues;
+  updateFormValues: UpdateFormValues;
   maxValue?: string;
   disabled?: boolean;
   fieldValidate?: (value: string) => { message?: string } | null;
   valueApply?: (value: string) => void;
 }>();
 
-const formData = inject<FormData>("formData");
+const formValues = inject<FormValues>("formValues");
 
 const field = reactive<{ value: string }>({
   value: "",
@@ -48,9 +48,9 @@ const remainingChars = computed(() => {
 });
 
 const errorMessage = computed(() => {
-  if (!formData.errors?.[props.path]) return "";
+  if (!formValues.errors?.[props.path]) return "";
 
-  return formData.errors[props.path]?.message;
+  return formValues.errors[props.path]?.message;
 });
 
 function updateValue(newValue: string) {
@@ -76,26 +76,26 @@ function validateField(newValue: string) {
 
     const updatedValue = { [props.path]: newValue };
 
-    props.updateFormData(updatedValue);
+    props.updateFormValues(updatedValue);
   }
 }
 
 function setError(message: string) {
   const updatedErrors = {
-    ...formData.errors,
+    ...formValues.errors,
     [props.path]: { message },
   };
-  props.updateFormData({ errors: updatedErrors });
+  props.updateFormValues({ errors: updatedErrors });
 }
 
 function clearError() {
   const errors = {
-    ...formData.errors,
+    ...formValues.errors,
   };
   if (!errors[props.path]) return;
 
   delete errors[props.path];
-  props.updateFormData({ errors: errors });
+  props.updateFormValues({ errors: errors });
 }
 </script>
 <style>
@@ -109,5 +109,9 @@ function clearError() {
 .container-message {
   display: flex;
   justify-content: space-between;
+}
+
+.max-value span {
+  text-transform: none;
 }
 </style>

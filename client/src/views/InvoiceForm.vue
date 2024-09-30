@@ -1,25 +1,28 @@
 <template>
   <div class="form">
     <base-form
-      v-slot="{ updateFormData }"
-      :rules="formValidate"
-      :formValues="invoiceForm"
+      v-slot="{ updateFormValues }"
+      :formValidationRules="invoiceValidationRules"
+      :formValues="invoiceFormValues"
     >
-      <description-field path="description" :updateFormData="updateFormData" />
+      <description-field
+        path="description"
+        :updateFormValues="updateFormValues"
+      />
       <radio-field
         path="confirmation"
-        :updateFormData="updateFormData"
-        label="CONFIRMATION"
+        :updateFormValues="updateFormValues"
+        label="confirmation"
       />
-      <vat-field path="vat" :updateFormData="updateFormData" />
-      <netto-field path="netto" :updateFormData="updateFormData" />
-      <brutto-field path="brutto" :updateFormData="updateFormData" />
+      <vat-field path="vat" :updateFormValues="updateFormValues" />
+      <netto-field path="netto" :updateFormValues="updateFormValues" />
+      <brutto-field path="brutto" :updateFormValues="updateFormValues" />
     </base-form>
   </div>
 </template>
 
 <script setup lang="ts">
-import { formValidate, invoiceForm } from "@/helpers/functions";
+import { invoiceValidationRules, invoiceFormValues } from "@/helpers/functions";
 import BaseForm from "@/components/BaseForm.vue";
 import VatField from "@/components/Fields/VatField.vue";
 import BruttoField from "@/components/Fields/BruttoField.vue";
@@ -77,6 +80,7 @@ span {
   display: block;
   margin-bottom: 5px;
   color: #333;
+  text-transform: uppercase;
 }
 
 .error-message {

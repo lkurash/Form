@@ -15,43 +15,43 @@
 
 <script setup lang="ts">
 import { computed, inject } from "vue";
-import { FormData, Form } from "@/helpers/types";
-import { UpdateFormData } from "@/helpers/types";
+import { FormValues, Form } from "@/helpers/types";
+import { UpdateFormValues } from "@/helpers/types";
 
 const props = defineProps<{
   label?: string;
-  path: keyof FormData;
-  updateFormData: UpdateFormData;
+  path: keyof FormValues;
+  updateFormValues: UpdateFormValues;
   options: string[];
   placeholder?: string;
 }>();
 
-const formData = inject<Form>("formData");
+const formValues = inject<Form>("formValues");
 
 const fieldValue = computed({
   get() {
-    return formData?.values[props.path];
+    return formValues?.values[props.path];
   },
   set(newValue) {
     clearError();
-    props.updateFormData({ [props.path]: newValue });
+    props.updateFormValues({ [props.path]: newValue });
   },
 });
 
 const errorMessage = computed(() => {
-  if (!formData?.errors?.[props.path]) return "";
+  if (!formValues?.errors?.[props.path]) return "";
 
-  return formData.errors[props.path]?.message;
+  return formValues.errors[props.path]?.message;
 });
 
 function clearError() {
   const errors = {
-    ...formData?.errors,
+    ...formValues?.errors,
   };
   if (!errors[props.path]) return;
 
   delete errors[props.path];
-  props.updateFormData({ errors });
+  props.updateFormValues({ errors });
 }
 </script>
 
