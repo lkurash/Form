@@ -68,7 +68,7 @@ This project implements a dynamic web form.
 1. **Clone the Repository:**
 
    ```bash
-   git clone https://github.com/lkurash/Form.git
+   git clone https://github.com/lkurash/Invoice-Details-Form.git
 
    ```
 
