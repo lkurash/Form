@@ -19,13 +19,13 @@
 </template>
 
 <script setup lang="ts">
-import { formValidate, invoiceForm } from "../helpers/functions";
-import BaseForm from "../components/BaseForm.vue";
-import VatField from "../components/Fields/VatField.vue";
-import BruttoField from "../components/Fields/BruttoField.vue";
-import NettoField from "../components/Fields/NettoField.vue";
-import RadioField from "../components/BaseFields/RadioField.vue";
-import DescriptionField from "../components/Fields/DescriptionField.vue";
+import { formValidate, invoiceForm } from "@/helpers/functions";
+import BaseForm from "@/components/BaseForm.vue";
+import VatField from "@/components/Fields/VatField.vue";
+import BruttoField from "@/components/Fields/BruttoField.vue";
+import NettoField from "@/components/Fields/NettoField.vue";
+import RadioField from "@/components/BaseFields/RadioField.vue";
+import DescriptionField from "@/components/Fields/DescriptionField.vue";
 </script>
 
 <style>

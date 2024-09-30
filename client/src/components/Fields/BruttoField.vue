@@ -6,7 +6,7 @@
 </template>
 
 <script setup lang="ts">
-import { Form, FormData, UpdateFormData } from "../../helpers/types";
+import { Form, FormData, UpdateFormData } from "@/helpers/types";
 import { inject, reactive, watch } from "vue";
 
 const props = defineProps<{

@@ -15,8 +15,7 @@
 
 <script setup lang="ts">
 import { computed, inject, reactive, watch } from "vue";
-import { FormData } from "../helpers.ts/types";
-import { UpdateFormData } from "../../helpers/types";
+import { UpdateFormData, FormData } from "@/helpers/types";
 
 const props = defineProps<{
   label?: string;

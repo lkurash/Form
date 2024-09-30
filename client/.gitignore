@@ -15,6 +15,7 @@ coverage
 *.local
 *.json
 *.cjs
+vitest.config.ts
 
 /cypress/videos/
 /cypress/screenshots/

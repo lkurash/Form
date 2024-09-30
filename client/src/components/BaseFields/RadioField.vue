@@ -31,7 +31,7 @@
 
 <script setup lang="ts">
 import { computed, inject } from "vue";
-import { Form, UpdateFormData, FormData } from "../../helpers/types";
+import { Form, UpdateFormData, FormData } from "@/helpers/types";
 
 const props = defineProps<{
   label?: string;

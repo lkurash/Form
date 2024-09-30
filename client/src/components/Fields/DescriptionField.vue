@@ -8,8 +8,8 @@
   />
 </template>
 <script lang="ts" setup>
-import { UpdateFormData, FormData } from "../../helpers/types";
-import TextField from "../BaseFields/TextField.vue";
+import { UpdateFormData, FormData } from "@/helpers/types";
+import TextField from "@/components/BaseFields/TextField.vue";
 
 const props = defineProps<{
   path: keyof FormData;

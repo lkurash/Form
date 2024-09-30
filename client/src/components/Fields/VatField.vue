@@ -9,8 +9,8 @@
 </template>
 
 <script setup lang="ts">
-import { FormData, UpdateFormData } from "../../helpers/types";
-import SelectField from "../BaseFields/SelectField.vue";
+import { FormData, UpdateFormData } from "@/helpers/types";
+import SelectField from "@/components/BaseFields/SelectField.vue";
 
 const props = defineProps<{
   path: keyof FormData;

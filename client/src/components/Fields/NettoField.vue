@@ -11,8 +11,8 @@
 
 <script setup lang="ts">
 import { inject, reactive, watch } from "vue";
-import { Form, UpdateFormData, FormData } from "../../helpers/types";
-import TextField from "../BaseFields/TextField.vue";
+import { Form, UpdateFormData, FormData } from "@/helpers/types";
+import TextField from "@/components/BaseFields/TextField.vue";
 
 const props = defineProps<{
   path: keyof FormData;
