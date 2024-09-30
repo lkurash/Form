@@ -50,7 +50,12 @@ export async function sendInVoceData(values: {
   netto: string;
   brutto: string;
 }) {
-  return await axios.post("http://localhost:3000/api/financial-info", values, {
-    headers: { "Content-Type": "application/json" },
-  });
+  const response = await axios.post(
+    "http://localhost:3000/api/financial-info",
+    values,
+    {
+      headers: { "Content-Type": "application/json" },
+    }
+  );
+  return response;
 }

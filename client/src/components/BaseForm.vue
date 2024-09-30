@@ -36,8 +36,8 @@ async function submitForm() {
 
 async function sendData() {
   try {
-    props.sendFormData(formValues.values);
     const response = props.sendFormData(formValues.values);
+
     isSuccessMessageShown.value = !!response;
   } catch (error) {
     isErrorMessageShown.value = !!error;
