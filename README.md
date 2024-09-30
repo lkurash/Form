@@ -74,5 +74,6 @@ This project implements a dynamic web form.
 
 2. **Start:**
    ```bash
+   cd Invoice-Details-Form
    ./run
    ```
