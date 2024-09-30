@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export function invoiceValidationRules(data: any) {
   const errors: Record<string, { message: string }> = {};
 
@@ -40,3 +42,15 @@ export const invoiceFormValues = {
     return this.errors;
   },
 };
+
+export async function sendInVoceData(values: {
+  description: string;
+  confirmation: boolean;
+  vat: string;
+  netto: string;
+  brutto: string;
+}) {
+  return await axios.post("http://localhost:3000/api/financial-info", values, {
+    headers: { "Content-Type": "application/json" },
+  });
+}

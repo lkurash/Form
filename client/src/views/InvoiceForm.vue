@@ -4,6 +4,7 @@
       v-slot="{ updateFormValues }"
       :formValidationRules="invoiceValidationRules"
       :formValues="invoiceFormValues"
+      :sendFormData="sendInVoceData"
     >
       <description-field
         path="description"
@@ -22,7 +23,11 @@
 </template>
 
 <script setup lang="ts">
-import { invoiceValidationRules, invoiceFormValues } from "@/helpers/functions";
+import {
+  invoiceValidationRules,
+  invoiceFormValues,
+  sendInVoceData,
+} from "@/helpers/functions";
 import BaseForm from "@/components/BaseForm.vue";
 import VatField from "@/components/Fields/VatField.vue";
 import BruttoField from "@/components/Fields/BruttoField.vue";

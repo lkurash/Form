@@ -15,10 +15,10 @@
 
 <script setup lang="ts">
 import { provide, reactive } from "vue";
-import axios from "axios";
 
 const props = defineProps<{
   formValues: any;
+  sendFormData: (values: any) => void;
 }>();
 
 const isSuccessMessageShown = reactive<{ value: boolean }>({ value: false });
@@ -36,13 +36,8 @@ async function submitForm() {
 
 async function sendData() {
   try {
-    const response = await axios.post(
-      "http://localhost:3000/api/financial-info",
-      formValues.values,
-      {
-        headers: { "Content-Type": "application/json" },
-      }
-    );
+    props.sendFormData(formValues.values);
+    const response = props.sendFormData(formValues.values);
     isSuccessMessageShown.value = !!response;
   } catch (error) {
     isErrorMessageShown.value = !!error;

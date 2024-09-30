@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import { computed, inject, reactive, watch } from "vue";
-import { UpdateFormValues, FormValues } from "@/helpers/types";
+import { UpdateFormValues, FormValues, Form } from "@/helpers/types";
 
 const props = defineProps<{
   label?: string;
@@ -27,7 +27,7 @@ const props = defineProps<{
   valueApply?: (value: string) => void;
 }>();
 
-const formValues = inject<FormValues>("formValues");
+const formValues = inject<Form>("formValues");
 
 const field = reactive<{ value: string }>({
   value: "",
@@ -48,7 +48,7 @@ const remainingChars = computed(() => {
 });
 
 const errorMessage = computed(() => {
-  if (!formValues.errors?.[props.path]) return "";
+  if (!formValues?.errors?.[props.path]) return "";
 
   return formValues.errors[props.path]?.message;
 });
@@ -82,7 +82,7 @@ function validateField(newValue: string) {
 
 function setError(message: string) {
   const updatedErrors = {
-    ...formValues.errors,
+    ...formValues?.errors,
     [props.path]: { message },
   };
   props.updateFormValues({ errors: updatedErrors });
@@ -90,7 +90,7 @@ function setError(message: string) {
 
 function clearError() {
   const errors = {
-    ...formValues.errors,
+    ...formValues?.errors,
   };
   if (!errors[props.path]) return;
 
